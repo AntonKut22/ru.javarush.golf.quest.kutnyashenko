@@ -1,14 +1,10 @@
 package ru.javarush.family.controller;
 
-import org.json.simple.parser.ParseException;
-import ru.javarush.family.init.InitGameFamily;
 import ru.javarush.family.entitie.Question;
-import ru.javarush.family.entitie.Role;
-import ru.javarush.family.entitie.User;
+import ru.javarush.family.repository.Questions;
+import ru.javarush.family.repository.Users;
 
 import java.io.*;
-import java.util.Map;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,22 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "helloServlet", value = "/hello")
-public class HelloServlet extends HttpServlet {
+public class DispatcherServlet extends HttpServlet {
 
-    Map<Long, Question> questionMap;
-    Map<String, User> userMap;
+    Users users;
+    Questions questions;
 
     @Override
     public void init() throws ServletException {
-        InitGameFamily initGameFamily;
-        try {
-            initGameFamily = InitGameFamily.getInstance();
-        } catch (IOException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        questionMap = initGameFamily.getQuestionMap();
-        userMap = initGameFamily.getUsers();
+        File fileUser = new File("D:\\Обучение\\JRU\\ru.familyQuest\\family\\src\\main\\resources\\users.json");
+        File fileQuestion = new File("D:\\Обучение\\JRU\\ru.familyQuest\\family\\src\\main\\resources\\questions.json");
+        users = new Users(fileUser);
+        questions = new Questions(fileQuestion);
     }
 
     @Override
@@ -40,16 +31,15 @@ public class HelloServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         int counter = 0;
-        if (userMap.containsKey(username)) {
-            counter = userMap.get(username).getCountOfGamesPlayed();
+        if (users.getUserMap().containsKey(username)) {
+            counter = users.getUser(username).getCountOfGamesPlayed();
         } else {
-            userMap.put(username, new User(Role.PLAYER, counter));
+            users.update(username);
         }
 
         request.setAttribute("counter", counter);
         request.setAttribute("username", username);
         request.setAttribute("nextQuestion", 1);
-//        request.setAttribute("ip", ip);
 
         request.getRequestDispatcher("/begin.jsp").forward(request, response);
     }
@@ -62,19 +52,11 @@ public class HelloServlet extends HttpServlet {
         String counter = request.getParameter("counter");
         String stringNextQuestion = request.getParameter("nextQuestion");
         Long nextQuestion = 0L;
-        if (stringNextQuestion.equals("wrong")) {
-            String whyFailure = request.getParameter("whyfailure");
-            request.setAttribute("whyfailure", whyFailure);
-            incrementCountOfGamesPlayer(username);
-            request.getRequestDispatcher("/defeat.jsp").forward(request, response);
-        } else if (stringNextQuestion.equals("win")) {
-            incrementCountOfGamesPlayer(username);
-            request.getRequestDispatcher("/win.jsp").forward(request, response);
-        } else {
-            nextQuestion = Long.parseLong(stringNextQuestion);
-        }
 
-        Question question = questionMap.get(nextQuestion);
+        nextQuestion = nextStep(request, response, username, stringNextQuestion, nextQuestion);
+
+
+        Question question = questions.getQuestion(nextQuestion);
 
         request.setAttribute("counter", counter);
         request.setAttribute("username", username);
@@ -84,14 +66,26 @@ public class HelloServlet extends HttpServlet {
         request.setAttribute("answers", question.getAnswers());
         request.setAttribute("whyfailure", question.getWhyFailure());
 
-
         request.getRequestDispatcher("/game.jsp").forward(request, response);
     }
 
-    private void incrementCountOfGamesPlayer(String username) {
-        User user = userMap.get(username);
-        user.setCountOfGamesPlayed(user.getCountOfGamesPlayed() + 1);
+    private Long nextStep(HttpServletRequest request, HttpServletResponse response, String username, String stringNextQuestion, Long nextQuestion) throws ServletException, IOException {
+        if (stringNextQuestion.equals("wrong")) {
+            String whyFailure = request.getParameter("whyfailure");
+            request.setAttribute("whyfailure", whyFailure);
+            users.incrementCountOfGamesPlayer(username);
+            request.getRequestDispatcher("/defeat.jsp").forward(request, response);
+        } else {
+            nextQuestion = Long.parseLong(stringNextQuestion);
+        }
+
+        if (nextQuestion == questions.getQuestionsMap().size()) {
+            users.incrementCountOfGamesPlayer(username);
+            request.getRequestDispatcher("/win.jsp").forward(request, response);
+        }
+        return nextQuestion;
     }
+
 
     public void destroy() {
         //TODO Реализовать запись игроков в json
