@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet(name = "helloServlet", value = "/hello")
+@WebServlet(name = "DispatcherServlet", value = "/hello")
 public class DispatcherServlet extends HttpServlet {
 
     Users users;
@@ -65,6 +65,7 @@ public class DispatcherServlet extends HttpServlet {
         request.setAttribute("question", question.getQuestion());
         request.setAttribute("answers", question.getAnswers());
         request.setAttribute("whyfailure", question.getWhyFailure());
+        request.setAttribute("image", question.getPathToImage());
 
         request.getRequestDispatcher("/game.jsp").forward(request, response);
     }
