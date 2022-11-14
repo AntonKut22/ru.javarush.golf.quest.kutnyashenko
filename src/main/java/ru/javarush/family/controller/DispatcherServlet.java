@@ -20,6 +20,7 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        //TODO починить, чтобы работало через относительный путь
         File fileUser = new File("D:\\Обучение\\JRU\\ru.familyQuest\\family\\src\\main\\resources\\users.json");
         File fileQuestion = new File("D:\\Обучение\\JRU\\ru.familyQuest\\family\\src\\main\\resources\\questions.json");
         users = new Users(fileUser);

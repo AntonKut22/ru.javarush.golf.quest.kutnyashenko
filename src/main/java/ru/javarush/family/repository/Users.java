@@ -3,7 +3,6 @@ package ru.javarush.family.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import ru.javarush.family.entitie.Question;
 import ru.javarush.family.entitie.Role;
 import ru.javarush.family.entitie.User;
 

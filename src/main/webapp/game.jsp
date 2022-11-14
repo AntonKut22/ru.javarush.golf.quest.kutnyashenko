@@ -25,7 +25,7 @@
                 </h3>
                 <br>
 
-                <h2>
+                <h3>
                     <form>
                         <input type="hidden" name="username" value="${username}" hidden>
                         <input type="hidden" name="counter" value="${counter}" hidden>
@@ -45,7 +45,7 @@
 
                         <input type="submit" value="ответить">
                     </form>
-                </h2>
+                </h3>
             </div>
 
             <div class="col-3">
