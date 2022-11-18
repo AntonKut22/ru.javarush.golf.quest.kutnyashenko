@@ -4,10 +4,15 @@
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%d %m %n"/>
         </Console>
+        <File name = "file" filename = "./logs/app.log" append = "true">
+            <PatternLayout pattern = "%d %m %n"/>
+        </File>
+
     </Appenders>
     <Loggers>
         <Root level="info">
             <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="file"/>
         </Root>
     </Loggers>
 </Configuration>

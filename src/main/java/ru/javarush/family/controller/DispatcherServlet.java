@@ -1,7 +1,5 @@
 package ru.javarush.family.controller;
 
-import lombok.ToString;
-import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.javarush.family.entitie.Question;
@@ -25,13 +23,10 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        //TODO починить, чтобы работало через относительный путь
-        log.info("Start DispatcherServlet {}");
-        File fileUser = new File("D:\\Обучение\\JRU\\ru.familyQuest\\family\\src\\main\\resources\\users.json");
-        File fileQuestion = new File("D:\\Обучение\\JRU\\ru.familyQuest\\family\\src\\main\\resources\\questions.json");
-        users = new Users(fileUser);
+        log.info("Start DispatcherServlet");
+        users = new Users(DispatcherServlet.class.getClassLoader().getResourceAsStream("users.json"));
         log.info("creating Users {}", users.getCountUsers());
-        questions = new Questions(fileQuestion);
+        questions = new Questions(DispatcherServlet.class.getClassLoader().getResourceAsStream("questions.json"));
         log.info("creating Questions {}", this);
     }
 
@@ -97,7 +92,7 @@ public class DispatcherServlet extends HttpServlet {
         if (nextQuestion == questions.getQuestionsMap().size()) {
             users.incrementCountOfGamesPlayer(username);
             request.getRequestDispatcher("/win.jsp").forward(request, response);
-            log.info("player: {} win game", username, this);
+            log.info("player: {} win game {}", username, this);
         }
 
         return nextQuestion;

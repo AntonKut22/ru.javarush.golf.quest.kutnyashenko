@@ -3,14 +3,12 @@ package ru.javarush.family.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.javarush.family.entitie.Question;
-import ru.javarush.family.entitie.User;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,12 +17,12 @@ public class Questions {
     private static final Logger log = LogManager.getLogger(Questions.class);
     private Map<Long, Question> questionsMap;
 
-    public Questions(File file) {
+    public Questions(InputStream file) {
         this.questionsMap = initialisationUsers(file);
         log.info("parsing json {}", this);
     }
 
-    private Map<Long, Question> initialisationUsers(File file) {
+    private Map<Long, Question> initialisationUsers(InputStream file) {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<Long, Question> initialisationQuestionsFromJson;
         try {
