@@ -1,7 +1,6 @@
-package ru.javarush.family.entitie;
+package ru.javarush.family.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,9 +11,9 @@ import lombok.ToString;
 public class User {
 
     @JsonProperty("role")
-    Role role;
+    private Role role;
     @JsonProperty("countOfGamesPlayed")
-    int countOfGamesPlayed;
+    private int countOfGamesPlayed;
 
     public User(@JsonProperty(value = "role") Role role,
                 @JsonProperty(value = "countOfGamesPlayed") int countOfGamesPlayed) {

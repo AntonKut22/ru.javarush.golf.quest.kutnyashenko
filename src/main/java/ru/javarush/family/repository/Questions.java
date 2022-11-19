@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.javarush.family.entitie.Question;
+import ru.javarush.family.entity.Question;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,39 +14,30 @@ import java.util.Map;
 
 @Getter
 public class Questions {
+
+    ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger log = LogManager.getLogger(Questions.class);
-    private Map<Long, Question> questionsMap;
+    private Map<Long, Question> idToQuestion;
 
     public Questions(InputStream file) {
-        this.questionsMap = initialisationUsers(file);
-        log.info("parsing json {}", this);
+        this.idToQuestion = initialisationUsers(file);
+        log.info("parsing json questions");
     }
 
     private Map<Long, Question> initialisationUsers(InputStream file) {
-        ObjectMapper objectMapper = new ObjectMapper();
+
         Map<Long, Question> initialisationQuestionsFromJson;
         try {
             initialisationQuestionsFromJson = objectMapper.readValue(file, new TypeReference<HashMap<Long, Question>>() {
             });
         } catch (IOException e) {
-            log.error("Error parsing json {}", this);
+            log.error("Error parsing json questions");
             throw new RuntimeException(e);
         }
         return initialisationQuestionsFromJson;
     }
 
     public Question getQuestion(Long id) {
-        return questionsMap.get(id);
-    }
-
-    public Integer getCountQuestion(){
-        return questionsMap.size();
-    }
-
-    @Override
-    public String toString() {
-        return "Questions{" +
-                "questionsMap size=" + questionsMap.size() +
-                '}';
+        return idToQuestion.get(id);
     }
 }

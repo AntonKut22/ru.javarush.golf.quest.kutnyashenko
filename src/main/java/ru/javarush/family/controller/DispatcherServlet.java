@@ -2,7 +2,7 @@ package ru.javarush.family.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.javarush.family.entitie.Question;
+import ru.javarush.family.entity.Question;
 import ru.javarush.family.repository.Questions;
 import ru.javarush.family.repository.Users;
 
@@ -25,9 +25,9 @@ public class DispatcherServlet extends HttpServlet {
     public void init() throws ServletException {
         log.info("Start DispatcherServlet");
         users = new Users(DispatcherServlet.class.getClassLoader().getResourceAsStream("users.json"));
-        log.info("creating Users {}", users.getCountUsers());
+        log.info("creating Users");
         questions = new Questions(DispatcherServlet.class.getClassLoader().getResourceAsStream("questions.json"));
-        log.info("creating Questions {}", this);
+        log.info("creating Questions");
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DispatcherServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         int counter = 0;
-        if (users.getUserMap().containsKey(username)) {
+        if (users.getNameUserToCharacteristic().containsKey(username)) {
             counter = users.getUser(username).getCountOfGamesPlayed();
             log.info("player {} back to the game. Count of games {}", username, counter);
         } else {
@@ -69,7 +69,7 @@ public class DispatcherServlet extends HttpServlet {
         request.setAttribute("username", username);
         request.setAttribute("idNextQuestion", nextQuestion + 1);
         request.setAttribute("questionId", nextQuestion);
-        request.setAttribute("question", question.getQuestion());
+        request.setAttribute("question", question.getTextQuestion());
         request.setAttribute("answers", question.getAnswers());
         request.setAttribute("whyfailure", question.getWhyFailure());
         request.setAttribute("image", question.getPathToImage());
@@ -89,7 +89,7 @@ public class DispatcherServlet extends HttpServlet {
             log.info("user {} moved on to the next question {}", username, this);
         }
 
-        if (nextQuestion == questions.getQuestionsMap().size()) {
+        if (nextQuestion == questions.getIdToQuestion().size()) {
             users.incrementCountOfGamesPlayer(username);
             request.getRequestDispatcher("/win.jsp").forward(request, response);
             log.info("player: {} win game {}", username, this);
@@ -100,15 +100,13 @@ public class DispatcherServlet extends HttpServlet {
 
 
     public void destroy() {
-        //TODO Реализовать запись игроков в json
+        //TODO Implement player recording in json
         log.info("quest Family destroyed {}", this);
     }
 
     @Override
     public String toString() {
         return "DispatcherServlet{" +
-                "users=" + users.getCountUsers() +
-                ", questions=" + questions.getCountQuestion() +
-                '}';
+                "users=" + users.getCountUsers() + "}";
     }
 }
