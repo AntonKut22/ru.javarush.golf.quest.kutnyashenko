@@ -12,11 +12,11 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
 public class Questions {
 
     ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger log = LogManager.getLogger(Questions.class);
+    @Getter
     private Map<Long, Question> idToQuestion;
 
     public Questions(InputStream file) {

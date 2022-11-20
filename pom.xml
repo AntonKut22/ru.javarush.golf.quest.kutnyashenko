@@ -22,7 +22,7 @@
         <lombok.version>1.18.22</lombok.version>
         <bootstrap.version>5.1.3</bootstrap.version>
         <jackson.version>2.13.4.2</jackson.version>
-        <jacoco.version>0.8.8</jacoco.version>
+        <mockito.version>4.8.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -82,10 +82,16 @@
             <version>${log4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.version}</version>
-            <type>maven-plugin</type>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

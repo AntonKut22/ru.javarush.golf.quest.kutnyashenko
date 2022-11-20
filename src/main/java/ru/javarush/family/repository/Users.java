@@ -55,8 +55,4 @@ public class Users {
         nameUserToCharacteristic.get(name).setCountOfGamesPlayed(countOfGamesPlayedUser + 1);
         log.info("increment count of games");
     }
-
-    public void deleteUser(String name){
-        nameUserToCharacteristic.remove(name);
-    }
 }
