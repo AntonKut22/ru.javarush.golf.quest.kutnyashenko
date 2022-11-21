@@ -24,7 +24,6 @@ class QuestionsTest {
     @ParameterizedTest
     @ValueSource(longs = {0, 5, 1000000, -50000})
     void getQuestionFromMapByKey(Long id) {
-//        idToQuestion = Mockito.mock(Map.class);
         assertEquals(questions.getQuestion(id), idToQuestion.get(id));
     }
 }

@@ -1,37 +1,46 @@
 package ru.javarush.family.repository;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import ru.javarush.family.entity.User;
+import ru.javarush.family.controller.DispatcherServlet;
 
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@ExtendWith(MockitoExtension.class)
 class UsersTest {
 
-    @Mock
-    private Users users;
+    private final Users users = new Users(DispatcherServlet.class.
+            getClassLoader().getResourceAsStream("users.json"));
 
-    @Mock
-    private Map<String, User> nameUserToCharacteristic;
+    @Test
+    void getUserExistingInJson() {
+        String existingName = "Petya";
+        assertNotNull(users.getUser(existingName));
+    }
 
-
-
-    @ParameterizedTest
-    @ValueSource(strings = {"Ivan", "Oleg", "Sergey", "Anatoly"})
-    void getUser(String name) {
-        assertEquals(nameUserToCharacteristic.get(name), users.getUser(name));
+    @Test
+    void getUserNonExistingInJson() {
+        String nonexistentName = "Ivan";
+        assertNull(users.getUser(nonexistentName));
     }
 
     @Test
     void getCountUsers() {
-        assertEquals(nameUserToCharacteristic.size(), users.getCountUsers());
+        assertEquals(2, users.getCountUsers());
+    }
+
+    @Test
+    void updateMapNewUser() {
+        String name = "Igor";
+        assertNull(users.getUser(name));
+        users.update(name);
+        assertNotNull(users.getUser(name));
+    }
+
+    @Test
+    void incrementCountOfGamesPlayer(){
+        String name = "Petya";
+        assertEquals(10, users.getUser(name).getCountOfGamesPlayed());
+        users.incrementCountOfGamesPlayer(name);
+        assertEquals(11, users.getUser(name).getCountOfGamesPlayed());
     }
 }

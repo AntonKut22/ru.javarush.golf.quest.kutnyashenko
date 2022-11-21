@@ -98,12 +98,6 @@ public class DispatcherServlet extends HttpServlet {
         return nextQuestion;
     }
 
-
-    public void destroy() {
-        //TODO Implement player recording in json
-        log.info("quest Family destroyed {}", this);
-    }
-
     @Override
     public String toString() {
         return "DispatcherServlet{" +

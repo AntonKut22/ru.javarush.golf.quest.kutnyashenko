@@ -20,7 +20,4 @@ public class User {
         this.role = role;
         this.countOfGamesPlayed = countOfGamesPlayed;
     }
-
-    //TODO Добавить количество побед
-
 }
