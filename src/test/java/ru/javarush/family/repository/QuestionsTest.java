@@ -1,29 +1,34 @@
 package ru.javarush.family.repository;
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import ru.javarush.family.entity.Question;
+import org.junit.jupiter.api.Test;
+import ru.javarush.family.controller.DispatcherServlet;
 
-import java.util.Map;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@ExtendWith(MockitoExtension.class)
 class QuestionsTest {
 
-    @Mock
-    private Questions questions;
+    private final Questions questions = new Questions(DispatcherServlet.class
+            .getClassLoader().getResourceAsStream("questions.json"));
 
-    @Mock
-    private Map<Long, Question> idToQuestion;
 
-    @ParameterizedTest
-    @ValueSource(longs = {0, 5, 1000000, -50000})
-    void getQuestionFromMapByKey(Long id) {
-        assertEquals(questions.getQuestion(id), idToQuestion.get(id));
+    @Test
+    void getQuestionExistingInJson() {
+        Long id = 1L;
+        assertNotNull(questions.getQuestion(id));
+    }
+
+    @Test
+    void getQuestionNonExistingInJson() {
+        Long id = 100L;
+        assertNull(questions.getQuestion(id));
+    }
+
+    @Test
+    void getQuestionIncorrectJson() {
+        Throwable thrown = assertThrows(RuntimeException.class, () -> new Questions(DispatcherServlet.class
+                .getClassLoader().getResourceAsStream("incorrectQuestions.json")));
     }
 }

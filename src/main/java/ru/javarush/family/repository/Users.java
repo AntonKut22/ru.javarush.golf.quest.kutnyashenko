@@ -13,11 +13,13 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
+
 public class Users {
 
     ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger log = LogManager.getLogger(Users.class);
+
+    @Getter
     private Map<String, User> nameUserToCharacteristic;
 
     public Users(InputStream file) {

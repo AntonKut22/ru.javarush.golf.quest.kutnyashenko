@@ -7,13 +7,13 @@ import lombok.Getter;
 public class Answer {
 
     @JsonProperty("answer")
-    private final String answer;
+    private final String textAnswer;
     @JsonProperty("fidelityAnswer")
     private final Boolean fidelityAnswer;
 
-    public Answer(@JsonProperty(value = "answer") String answer,
+    public Answer(@JsonProperty(value = "answer") String textAnswer,
                   @JsonProperty(value = "fidelityAnswer") Boolean fidelityAnswer) {
-        this.answer = answer;
+        this.textAnswer = textAnswer;
         this.fidelityAnswer = fidelityAnswer;
     }
 }

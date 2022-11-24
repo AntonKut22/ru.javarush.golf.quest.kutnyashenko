@@ -43,4 +43,10 @@ class UsersTest {
         users.incrementCountOfGamesPlayer(name);
         assertEquals(11, users.getUser(name).getCountOfGamesPlayed());
     }
+
+    @Test
+    void getUserIncorrectJson() {
+        Throwable thrown = assertThrows(RuntimeException.class, () -> new Users(DispatcherServlet.class
+                .getClassLoader().getResourceAsStream("incorrectQuestions.json")));
+    }
 }

@@ -21,10 +21,6 @@ public class Question {
     @JsonProperty("pathToImage")
     private String pathToImage;
 
-    public Question(){
-
-    }
-
     public Question(@JsonProperty(value = "question") String textQuestion,
                     @JsonProperty(value = "answers") ArrayList<Answer> answers,
                     @JsonProperty(value = "whyFailure") String whyFailure,
