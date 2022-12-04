@@ -32,13 +32,13 @@
 
                         <c:forEach var="answersList" items="${answers}">
                             <c:if test="${answersList.fidelityAnswer}">
-                                <input type="radio" name="nextQuestion" value="${idNextQuestion}"> ${answersList.answer}
+                                <input type="radio" name="nextQuestion" value="${idNextQuestion}"> ${answersList.textAnswer}
                                 <br>
                             </c:if>
 
                             <c:if test="${!answersList.fidelityAnswer}">
                                 <input type="hidden" name="whyfailure" value="${whyfailure}">
-                                <input type="radio" name="nextQuestion" value="wrong"> ${answersList.answer}
+                                <input type="radio" name="nextQuestion" value="wrong"> ${answersList.textAnswer}
                                 <br>
                             </c:if>
                         </c:forEach>
