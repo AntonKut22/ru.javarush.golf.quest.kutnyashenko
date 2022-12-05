@@ -1,0 +1,11 @@
+{
+  "Vasya": {
+    "role": "PLAYER",
+    "countOfGamesPlayed": "3"
+  },
+  "Petya": {
+    "role": "PLAYER",
+    "countOfGamesPlayed": "10"
+  }
+}
+
